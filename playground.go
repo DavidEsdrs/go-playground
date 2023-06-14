@@ -16,6 +16,28 @@ var printf = fmt.Printf
 func main() {
 }
 
+// input: containsDuplicate([]int{2, 14, 18, 22, 22})
+// output: true
+func containsDuplicate(nums []int) bool {
+	nLength := len(nums)
+
+	if nLength <= 1 {
+		return false
+	}
+
+	set := make(map[int]bool)
+
+	for i := 0; i < nLength; i++ {
+		if _, exists := set[nums[i]]; exists {
+			return true
+		} else {
+			set[nums[i]] = true
+		}
+	}
+
+	return false
+}
+
 // input: isValid("()[{}{}]")
 // output: true
 func isValid(s string) bool {
