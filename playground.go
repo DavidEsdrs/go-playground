@@ -13,7 +13,115 @@ import (
 var print = fmt.Println
 var printf = fmt.Printf
 
-func main() {
+// input: checkStraightLine([][]int{{1, 2}, {2, 3}, {3, 4}, {4, 5}, {5, 6}, {6, 7}})
+// output: true
+func checkStraightLine(coordinates [][]int) bool {
+	coordinatesLength := len(coordinates)
+
+	if coordinatesLength <= 2 {
+		return true
+	}
+
+	firstLine := coordinates[0]
+	secondLine := coordinates[1]
+
+	for i := 2; i < coordinatesLength; i++ {
+		currentCrd := coordinates[i]
+		det := (firstLine[0]*secondLine[1] + secondLine[0]*currentCrd[1] + currentCrd[0]*firstLine[1]) - (firstLine[1]*secondLine[0] + secondLine[1]*currentCrd[0] + currentCrd[1]*firstLine[0])
+		if det != 0 {
+			return false
+		}
+	}
+
+	return true
+}
+
+// input: maxProfit([]int{6, 4, 3, 2, 7, 0, 3, 5, 17, 1, 8, 9})
+// output: 17
+func maxProfit(prices []int) int {
+	pricesLength := len(prices)
+
+	if pricesLength <= 1 {
+		return 0
+	}
+
+	profit := 0
+	minValIdx := 0
+
+	for i := 0; i < pricesLength; i++ {
+		diff := prices[i] - prices[minValIdx]
+
+		if diff > profit {
+			profit = diff
+		}
+
+		if prices[i] < prices[minValIdx] {
+			minValIdx = i
+		}
+	}
+
+	return profit
+}
+
+type Tuple struct {
+	item      int
+	frequency int
+}
+
+func topKFrequent(nums []int, k int) []int {
+	nLength := len(nums)
+	if nLength <= 1 {
+		return nums
+	}
+
+	max, min := nums[0], nums[0]
+
+	for _, n := range nums {
+		if n > max {
+			max = n
+		}
+		if n < min {
+			min = n
+		}
+	}
+
+	var size int
+	offset := 0
+
+	if min < 0 {
+		offset = -min
+		size = max - min + 1
+	} else {
+		size = max + 1
+	}
+
+	countArr := make([]int, size)
+
+	for _, n := range nums {
+		countArr[n+offset]++
+	}
+
+	arr := make([]Tuple, size)
+
+	print(countArr, offset, size)
+	for i, n := range countArr {
+		arr[n].item = i - offset
+		arr[n].frequency = n
+	}
+
+	print("arr:", arr)
+
+	res := make([]int, k)
+
+	i := 0
+	for n := len(arr) - 1; n >= 0 && i < k; n-- {
+		if arr[n].frequency > 0 {
+			res[i] = arr[n].item
+			i++
+		}
+	}
+
+	return res
 }
 
 // input: containsDuplicate([]int{2, 14, 18, 22, 22})
