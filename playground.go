@@ -63,67 +63,6 @@ func maxProfit(prices []int) int {
 	return profit
 }
 
-type Tuple struct {
-	item      int
-	frequency int
-}
-
-func topKFrequent(nums []int, k int) []int {
-	nLength := len(nums)
-	if nLength <= 1 {
-		return nums
-	}
-
-	max, min := nums[0], nums[0]
-
-	for _, n := range nums {
-		if n > max {
-			max = n
-		}
-		if n < min {
-			min = n
-		}
-	}
-
-	var size int
-	offset := 0
-
-	if min < 0 {
-		offset = -min
-		size = max - min + 1
-	} else {
-		size = max + 1
-	}
-
-	countArr := make([]int, size)
-
-	for _, n := range nums {
-		countArr[n+offset]++
-	}
-
-	arr := make([]Tuple, size)
-
-	print(countArr, offset, size)
-	for i, n := range countArr {
-		arr[n].item = i - offset
-		arr[n].frequency = n
-	}
-
-	print("arr:", arr)
-
-	res := make([]int, k)
-
-	i := 0
-	for n := len(arr) - 1; n >= 0 && i < k; n-- {
-		if arr[n].frequency > 0 {
-			res[i] = arr[n].item
-			i++
-		}
-	}
-
-	return res
-}
-
 // input: containsDuplicate([]int{2, 14, 18, 22, 22})
 // output: true
 func containsDuplicate(nums []int) bool {
