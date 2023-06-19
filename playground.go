@@ -13,6 +13,48 @@ import (
 var print = fmt.Println
 var printf = fmt.Printf
 
+// input: findMedianSortedArrays([]int{2, 2, 4, 4}, []int{2, 2, 4, 4})
+// output: 3.00
+func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
+	topLeft := 0
+	topRight := 0
+
+	totalLength := len(nums1) + len(nums2)
+
+	arr := make([]int, totalLength)
+
+	for k := 0; k < totalLength; k++ {
+		if topLeft >= len(nums1) {
+			arr[k] = nums2[topRight]
+			topRight++
+
+		} else if topRight >= len(nums2) {
+			arr[k] = nums1[topLeft]
+			topLeft++
+
+		} else if nums1[topLeft] <= nums2[topRight] {
+			arr[k] = nums1[topLeft]
+			topLeft++
+
+		} else {
+			arr[k] = nums2[topRight]
+			topRight++
+		}
+	}
+
+	if totalLength%2 != 0 {
+		mid := totalLength / 2
+		return float64(arr[mid])
+	}
+
+	idx := totalLength / 2
+	prevIdx := idx - 1
+
+	median := float64(arr[idx]+arr[prevIdx]) / 2
+
+	return median
+}
+
 // input: checkStraightLine([][]int{{1, 2}, {2, 3}, {3, 4}, {4, 5}, {5, 6}, {6, 7}})
 // output: true
 func checkStraightLine(coordinates [][]int) bool {
